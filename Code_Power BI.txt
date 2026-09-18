@@ -1,0 +1,273 @@
+1. AverageOrderValue = 
+DIVIDE(
+    [TotalSales],
+    [TotalOrders]
+)
+
+
+2. AverageSellingPrice = 
+DIVIDE(
+    [TotalSales],
+    [TotalQuantity]
+)
+
+
+3. Avg. Revenue PerProduct = DIVIDE(
+     [TotalSales],
+     [Products Sold]
+)
+
+4. CostAmount = Sales[Quantity] * RELATED(Products[Unit Cost USD])
+
+5. Customer Rank = RANKX(
+     ALL(Customers[Name]),
+     [TotalSales],
+     ,
+     DESC
+)
+
+6. Customers YoY% = DIVIDE(
+    [TotalCustomers] - [TotalCustomers PreviousYear],
+    [TotalCustomers PreviousYear]
+)
+
+7. Orders PY = 
+CALCULATE(
+    [TotalOrders],
+    SAMEPERIODLASTYEAR('Date'[Date])
+)
+
+8. Orders YoY % = 
+DIVIDE(
+    [TotalOrders] - [Orders PY],
+    [Orders PY]
+)
+
+9. Product Profitability % = DIVIDE(
+     [TotalProfit],
+     [TotalSales]
+)
+
+10. Product Rank = 
+RANKX(
+    ALLSELECTED(Products[Product Name]),
+    [TotalSales],
+    ,
+    DESC,
+    DENSE
+)
+
+11. Products Sold = DISTINCTCOUNT(
+     Sales[ProductKey])
+
+12. ProductSold PY = CALCULATE(
+    [Products Sold],
+    SAMEPERIODLASTYEAR('Date'[Date])
+)
+
+13. Profit Contribution % = 
+DIVIDE(
+    [TotalProfit],
+    CALCULATE(
+        [TotalProfit],
+        ALL(Products[Brand])
+    ),
+    0
+)
+
+14. Profit PreviousYear = 
+CALCULATE(
+    [TotalProfit],
+    SAMEPERIODLASTYEAR('Date'[Date])
+)
+
+15. Profit YoY % = DIVIDE(
+    [TotalProfit] - [Profit PreviousYear],
+    [Profit PreviousYear]
+)
+
+16. ProfitContribution Country % = 
+DIVIDE(
+    [TotalProfit],
+    CALCULATE(
+        [TotalProfit],
+        ALL(Customers[Country])
+    ),
+    0
+)
+
+17. ProfitMargin = DIVIDE(
+    [TotalProfit],
+    [TotalSales]
+)
+
+18. ProfitMargin PreviousYear = 
+CALCULATE(
+    [ProfitMargin],
+    SAMEPERIODLASTYEAR('Date'[Date])
+)
+
+19. ProfitMargin PY = 
+CALCULATE(
+    [ProfitMargin],
+    SAMEPERIODLASTYEAR('Date'[Date])
+)
+
+20. ProfitMargin YoY % = DIVIDE(
+    [ProfitMargin] - [ProfitMargin PY],
+    [ProfitMargin PY]
+)
+
+21. Sales PreviousYear = CALCULATE(
+    [TotalSales],
+    SAMEPERIODLASTYEAR('Date'[Date])
+)
+
+22. Sales YoY % = 
+DIVIDE(
+    [TotalSales] - [Sales PreviousYear],
+    [Sales PreviousYear]
+)
+
+23. SalesAmount = Sales[Quantity] * RELATED(Products[Unit Price USD])
+24. SalesPer Customer = DIVIDE(
+     [TotalSales],
+     [TotalCustomers]
+)
+
+25. Selected Top N = 
+SELECTEDVALUE(
+    'Top N Selection'[Top N],
+    10
+)
+
+26. Show Top N Product = 
+VAR N = 'Sales'[Selected Top N]
+VAR ProductRank = [Product Rank]
+RETURN
+IF(
+    ProductRank <= N,
+    1,
+    0
+)
+
+27. Top N Product Title = 
+"Top "
+    & [Selected Top N]
+    & " Products by Sales"
+
+28. TotalCost = SUM(Sales[CostAmount]) 
+29. TotalCustomers = DISTINCTCOUNT(Sales[CustomerKey]) 
+30. TotalCustomers PreviousYear = 
+CALCULATE(
+    [TotalCustomers],
+    SAMEPERIODLASTYEAR('Date'[Date])
+)
+31. TotalOrders = DISTINCTCOUNT(Sales[Order Number]) 
+32. TotalProfit = [TotalSales] - [TotalCost]
+33. TotalQuantity = SUM(Sales[Quantity])
+34. TotalSales = SUM(Sales[SalesAmount])
+35. YoY Arrow = 
+IF(
+    [Sales YoY %] > 0,
+    "▲",
+    IF(
+        [Sales YoY %] < 0,
+        "▼",
+        "—"
+    )
+)
+
+36. YoY Color = 
+IF(
+    [Sales YoY %] > 0,
+    "#008000",
+    IF(
+        [Sales YoY %] < 0,
+        "#C00000",
+        "#808080"
+    )
+)
+
+37. YoY Display = 
+VAR Growth = [Sales YoY %]
+VAR Arrow =
+    SWITCH(
+        TRUE(),
+        Growth > 0, "▲ ",
+        Growth < 0, "▼ ",
+        "— "
+    )
+RETURN
+    Arrow & " " & FORMAT(Growth, "0.0%") & " YoY"
+
+38. YoY% Orders = 
+VAR Growth = [Orders YoY %]
+VAR Arrow =
+    SWITCH(
+        TRUE(),
+        Growth > 0, "▲ ",
+        Growth < 0, "▼ ",
+        "— "
+    )
+RETURN
+    Arrow & " " & FORMAT(Growth, "0.0%") & " YoY"
+
+39. YoY% Profit = 
+VAR Growth = [Profit YoY %]
+VAR Arrow =
+    SWITCH(
+        TRUE(),
+        Growth > 0, "▲ ",
+        Growth < 0, "▼ ",
+        "— "
+    )
+RETURN
+    Arrow & " " & FORMAT(Growth, "0.0%") & " YoY"
+
+40.  YoY% ProfitMargin = 
+VAR Growth = [ProfitMargin YoY %]
+VAR Arrow =
+    SWITCH(
+        TRUE(),
+        Growth > 0, "▲ ",
+        Growth < 0, "▼ ",
+        "— "
+    )
+RETURN
+    Arrow & " " & FORMAT(Growth, "0.0%") & " YoY"
+
+42. YoY% TotalCustomers = 
+VAR Growth = [Customers YoY%]
+VAR Arrow =
+    SWITCH(
+        TRUE(),
+        Growth > 0, "▲ ",
+        Growth < 0, "▼ ",
+        "— "
+    )
+RETURN
+    Arrow & " " & FORMAT(Growth, "0.0%") & " YoY"
+
+43.  YTD Profit = TOTALYTD(
+    [TotalProfit],
+    'Date'[Date]
+)
+
+44. YTD Sales = TOTALYTD(
+     [TotalSales],
+     'Date'[Date]
+)
+
+
+45. Create a Calculated Table:
+CalendarTable = 
+ADDCOLUMNS(
+CALENDAR(DATE(2023, 08, 01), DATE(2023, 10, 31)),
+"Year", YEAR([Date]),
+"Month Number", MONTH([Date]),
+"Month", FORMAT([Date], "MMMM"),
+"Quarter", QUARTER([Date]),
+"Weekday", WEEKDAY([Date]),
+"Day", DAY([Date])
+) 
