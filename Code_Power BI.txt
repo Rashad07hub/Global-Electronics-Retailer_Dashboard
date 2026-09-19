@@ -1,3 +1,18 @@
+1. TotalQuantity = SUM(Sales[Quantity])
+
+28. TotalCost = SUM(Sales[CostAmount]) 
+29. TotalCustomers = DISTINCTCOUNT(Sales[CustomerKey]) 
+30. TotalCustomers PreviousYear = 
+CALCULATE(
+    [TotalCustomers],
+    SAMEPERIODLASTYEAR('Date'[Date])
+)
+31. TotalOrders = DISTINCTCOUNT(Sales[Order Number]) 
+32. TotalProfit = [TotalSales] - [TotalCost]
+
+34. TotalSales = SUM(Sales[SalesAmount])
+
+
 1. AverageOrderValue = 
 DIVIDE(
     [TotalSales],
@@ -156,17 +171,6 @@ IF(
     & [Selected Top N]
     & " Products by Sales"
 
-28. TotalCost = SUM(Sales[CostAmount]) 
-29. TotalCustomers = DISTINCTCOUNT(Sales[CustomerKey]) 
-30. TotalCustomers PreviousYear = 
-CALCULATE(
-    [TotalCustomers],
-    SAMEPERIODLASTYEAR('Date'[Date])
-)
-31. TotalOrders = DISTINCTCOUNT(Sales[Order Number]) 
-32. TotalProfit = [TotalSales] - [TotalCost]
-33. TotalQuantity = SUM(Sales[Quantity])
-34. TotalSales = SUM(Sales[SalesAmount])
 35. YoY Arrow = 
 IF(
     [Sales YoY %] > 0,
