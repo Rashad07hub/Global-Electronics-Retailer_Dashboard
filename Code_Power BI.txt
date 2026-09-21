@@ -68,6 +68,16 @@ DIVIDE(
      [TotalSales],
      'Date'[Date]
 )
+20. Sales YTD PY = 
+CALCULATE(
+    [YTD Sales],
+    SAMEPERIODLASTYEAR('Date'[Date])
+)
+21. YTD Sales Growth % = 
+DIVIDE(
+    [YTD Sales] - [Sales YTD PY],
+    [Sales YTD PY]
+)
 
 20. CostAmount = Sales[Quantity] * RELATED(Products[Unit Cost USD])
 21. TotalCost = SUM(Sales[CostAmount]) 
